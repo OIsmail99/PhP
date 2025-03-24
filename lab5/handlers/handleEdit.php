@@ -1,13 +1,15 @@
 <?php
-require_once '../DB/db_operations.php';
+require_once '../DB/dbOperations.php';
 require_once '../helpers.php';
+$db = Database::getInstance();
 
 // Check if it's a GET request to display the edit form
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     $id = $_GET['id'];
     
     // Get user data from mysql
-    $userData = getUserById($id);
+
+    $userData = $db->getUserById($id);
     
     // if (!$userData) {
     //     echo "User not found";
@@ -72,7 +74,8 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     
     $id = $_POST['id'];
-    $result = editData($id, $updateFields);
+    $result = $db->editData($id, $updateFields);
+    //$result = editData($id, $updateFields);
     
     if ($result) {
         header("Location: ../app/table.php");
@@ -82,19 +85,19 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 
-function getUserById($id) {
-    try {
-        $conn = connect_to_db_pdo();
-        $query = "SELECT * FROM users WHERE id = :id";
-        $stmt = $conn->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        error_log($e->getMessage());
-        return false;
-    } finally {
-        $conn = null;
-    }
-}
+// function getUserById($id) {
+//     try {
+//         $conn = connect_to_db_pdo();
+//         $query = "SELECT * FROM users WHERE id = :id";
+//         $stmt = $conn->prepare($query);
+//         $stmt->bindParam(':id', $id);
+//         $stmt->execute();
+//         return $stmt->fetch(PDO::FETCH_ASSOC);
+//     } catch (PDOException $e) {
+//         error_log($e->getMessage());
+//         return false;
+//     } finally {
+//         $conn = null;
+//     }
+// }
 ?>

@@ -1,7 +1,6 @@
 <?php
 require_once "../helpers.php";
-require_once "../DB/db_operations.php";
-
+require_once "../DB/dbOperations.php";
 $formDataIssues = validatePostData($_POST);
 $formErrors = $formDataIssues["errors"];
 $oldData = $formDataIssues["valid_data"];
@@ -67,7 +66,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     
     if ($password == $confirm_password) {
-            $insertedId = insertData($name, $email, $hashedPassword, $room, $image_path);
+            $db = Database::getInstance();
+            $insertedId = $db->insertData($name, $email, $hashedPassword, $room, $image_path);
             // $data = "{$id},{$name},{$email},{$password},{$room},{$image_path}\n";
             // $saved = appendDataTofile("users.txt", $data);
 
